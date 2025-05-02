@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Course Fee Calculator</title>
+  <style>
+    body {
+      font-family:'Times New Roman', Times, serif;
+      margin: 40px;
+      font-size: 20px;
+      background-image: url("1567759.jpg");
+    }
+    h2 {
+      color: white;
+    }
+    .container {
+      background: linear-gradient(135deg, #1c1c1c, #333333);
+      color: white;
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    label {
+      display:inline-block;
+      margin-top: 15px;
+    }
+    input[type="number"], select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .radio-group {
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #6610f2, #007bff);
+      border: none;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #28a745, #218838);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border: 2px solid #1e7e34;
+    }
+    .summary {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      color: black;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .success-message {
+      margin-top: 20px;
+      padding: 15px;
+      font-size: 20px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <center><b><h2>ACADEMIC FEE CALCULATOR</h2></b></center>
+
+    <label for="courseList">SELECT COURSE:</label>
+    <select id="courseList" onchange="updateFees()">
+      <option value="0,0">-- Select a Course --</option>
+      <option value="5000,500">Web Development</option>
+      <option value="7000,700">Data Science</option>
+      <option value="6000,600">Graphic Design</option>
+      <option value="8000,800">AI & Machine Learning</option>
+      <option value="5500,550">Cybersecurity</option>
+      <option value="6500,650">Cloud Computing</option>
+      <option value="7500,750">Blockchain Development</option>
+      <option value="9000,900">Full Stack Development</option>
+      <option value="4000,400">Digital Marketing</option>
+      <option value="3000,300">Content Writing</option>
+    </select>
+
+    <label for="courseFee">COURSE FEE:</label>
+    <input type="number" id="courseFee" min="0" required readonly>
+
+    <label for="materialFee">MATERIAL FEE:</label>
+    <input type="number" id="materialFee" min="0" required>
+
+    <label for="certificationFee">CERTIFICATION FEE (optional):</label>
+    <input type="number" id="certificationFee" min="0" readonly>
+
+    <label for="discount">DISCOUNT (%) (optional):</label>
+    <input type="number" id="discount" min="0" max="100">
+
+    <label for="taxRate">TAX RATE (%):</label>
+    <select id="taxRate">
+      <option value="0">0%</option>
+      <option value="5">5%</option>
+      <option value="10">10%</option>
+      <option value="18">18%</option>
+      <option value="28">28%</option>
+    </select>
+
+    <button onclick="validateAndCalculate()">Calculate</button>
+
+    <div id="result" class="result"></div>
+    <div id="summary" class="summary"></div>
+    <div id="successMessage" class="success-message"></div>
+  </div>
+
+  <script>
+    function updateFees() {
+      const courseList = document.getElementById('courseList');
+      const selectedCourse = courseList.value.split(',');
+      document.getElementById('courseFee').value = selectedCourse[0] || 0;
+      document.getElementById('certificationFee').value = selectedCourse[1] || 0;
+    }
+
+    function validateAndCalculate() {
+      const courseFee = parseFloat(document.getElementById('courseFee').value) || 0;
+      const materialFee = parseFloat(document.getElementById('materialFee').value) || 0;
+      const certificationFee = parseFloat(document.getElementById('certificationFee').value) || 0;
+      const discount = parseFloat(document.getElementById('discount').value) || 0;
+      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+      
+      const totalBeforeDiscount = courseFee + materialFee + certificationFee;
+      const discountAmount = (totalBeforeDiscount * discount) / 100;
+      const subtotal = totalBeforeDiscount - discountAmount;
+      const taxAmount = (subtotal * taxRate) / 100;
+      const finalTotal = subtotal + taxAmount;
+
+      document.getElementById('result').innerHTML = `Total Fee: ₹ ${finalTotal.toFixed(2)}<br>Tax Applied: ₹ ${taxAmount.toFixed(2)}`;
+      document.getElementById('successMessage').innerHTML = "Calculation Successful!";
+      alert("Calculation successful! Check the result below.");
+    }
+  </script>
+</body>
+</html>

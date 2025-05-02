@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Enrollment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("img.jpg") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-top: 50px;
+        }
+        .container {
+            background: rgb(59, 58, 58);
+            padding: 30px;
+            width: 500px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; 
+            max-height: 90vh; 
+        }
+        h2 {
+            text-align: center;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            color: white;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .radio-group label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .checkbox-group {
+            display: flex;
+         align-items: center;
+         gap: 10px; 
+        }
+        .checkbox-group input {
+            width: auto; 
+        }
+        .checkbox-group label {
+            margin: 0;
+        }
+
+    </style>
+   <script>
+    function validateForm() {
+    let form = document.forms['placementForm'];
+    let isValid = true;
+    
+    let nameRegex = /^[A-Za-z\s]+$/;  
+    let phoneRegex = /^[0-9]{10}$/; 
+
+    ['name', 'dept', 'class'].forEach(field => {
+        let input = form[field].value.trim();
+        let errorElement = document.getElementById(field + 'Error');
+        if (!input) {
+            errorElement.innerHTML = field.charAt(0).toUpperCase() + field.slice(1) + " is required!";
+            isValid = false;
+        } else if (!nameRegex.test(input)) {
+            errorElement.innerHTML = "Only letters are allowed!";
+            isValid = false;
+        } else {
+            errorElement.innerHTML = "";
+        }
+    });
+
+    let rollno = form['rollno'].value.trim();
+    if (!rollno) {
+        document.getElementById('rollnoError').innerHTML = "Roll Number is required!";
+        isValid = false;
+    } else {
+        document.getElementById('rollnoError').innerHTML = "";
+    }
+
+    let phone = form['phone'].value.trim();
+    if (!phone) {
+        document.getElementById('phoneError').innerHTML = "Phone number is required!";
+        isValid = false;
+    } else if (!phoneRegex.test(phone)) {
+        document.getElementById('phoneError').innerHTML = "Enter a valid 10-digit phone number!";
+        isValid = false;
+    } else {
+        document.getElementById('phoneError').innerHTML = "";
+    }
+
+    let email = form['email'].value.trim();
+    if (!email) {
+        document.getElementById('emailError').innerHTML = "Email is required!";
+        isValid = false;
+    } else {
+        document.getElementById('emailError').innerHTML = "";
+    }
+
+    let cgpa = form['cgpa'].value;
+    if (cgpa && (cgpa < 0 || cgpa > 10)) {
+        document.getElementById('cgpaError').innerHTML = "CGPA must be between 0 and 10!";
+        isValid = false;
+    } else {
+        document.getElementById('cgpaError').innerHTML = "";
+    }
+
+    let genderChecked = document.querySelector('input[name="gender"]:checked');
+    if (!genderChecked) {
+        document.getElementById('genderError').innerHTML = "Please select your gender!";
+        isValid = false;
+    } else {
+        document.getElementById('genderError').innerHTML = "";
+    }
+
+    let agreement = form['agreement'].checked;
+    if (!agreement) {
+        document.getElementById('agreementError').innerHTML = "You must agree to proceed!";
+        isValid = false;
+    } else {
+        document.getElementById('agreementError').innerHTML = "";
+    }
+
+    if (isValid) alert("Enrollment Successful!");
+    return isValid;
+}
+
+</script>
+
+</head>
+<body>
+    <div class="container">
+        <h2>Placement Enrollment Form</h2>
+        <form name="placementForm" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="name">
+                <div class="error" id="nameError"></div>
+            </div>
+            <div class="form-group">
+                <label>Roll Number:</label>
+                <input type="text" name="rollno">
+                <div class="error" id="rollnoError"></div>
+            </div>
+            <div class="form-group">
+                <label>Department:</label>
+                <input type="text" name="dept">
+                <div class="error" id="deptError"></div>
+            </div>
+            <div class="form-group">
+                <label>Class:</label>
+                <input type="text" name="class">
+                <div class="error" id="classError"></div>
+            </div>
+            <div class="form-group radio-group">
+                <label>Gender:</label>
+                <label><input type="radio" name="gender" value="Male"> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
+                <label><input type="radio" name="gender" value="Other"> Other</label>
+                <div class="error" id="genderError"></div>
+            </div>
+            <div class="form-group">
+                <label>CGPA:</label>
+                <input type="number" name="cgpa" step="0.01" min="0" max="10">
+                <div class="error" id="cgpaError"></div>
+            </div>
+            <div class="form-group">
+                <label>Date of Birth:</label>
+                <input type="date" name="dob">
+                <div class="error" id="dobError"></div>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email">
+                <div class="error" id="emailError"></div>
+            </div>
+            <div class="form-group">
+                <label>Phone:</label>
+                <input type="text" name="phone">
+                <div class="error" id="phoneError"></div>
+            </div>
+            <div class="form-group">
+                <label>Preferred Role:</label>
+                <select name="role">
+                    <option value="">Select Role</option>
+                    <option value="Software Developer">Software Engineer</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Network Engineer">Web Developer</option>
+                    <option value="Cyber Security Analyst">Cyber Security Analyst</option>
+                </select>
+                <div class="error" id="roleError"></div>
+            </div>
+            <div class="form-group">
+                <label>Certifications:</label>
+                <input type="text" name="certifications">
+            </div>
+            <div class="form-group">
+                <label>Additional Comments:</label>
+                <textarea name="comments" rows="3"></textarea>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" name="agreement">
+                <label>I agree to the terms and conditions</label>
+                <div class="error" id="agreementError"></div>
+            </div>
+            <input type="submit" class="submit-btn" value="Enroll Now">
+        </form>
+    </div>
+</body>
+</html>
